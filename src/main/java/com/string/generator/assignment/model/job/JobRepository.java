@@ -1,4 +1,4 @@
-package com.string.generator.assignment.model;
+package com.string.generator.assignment.model.job;
 
 import java.util.ArrayList;
 import java.util.Collections;
