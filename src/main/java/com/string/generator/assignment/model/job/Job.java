@@ -14,6 +14,9 @@ public class Job
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column
+    private short active;
+
     @Column(nullable = false)
     private String allowedCharacters;
 
@@ -32,61 +35,43 @@ public class Job
     @Column
     private Date finishedAt;
 
-    public Date getStartedAt()
-    {
-        return startedAt;
-    }
-
-    public void setStartedAt(Date startedAt)
-    {
-        this.startedAt = startedAt;
-    }
-
-    public Date getFinishedAt() {
-        return finishedAt;
-    }
-
-    public void setFinishedAt(Date finishedAt) {
-        this.finishedAt = finishedAt;
-    }
-
-    public long getId()
-    {
+    public long getId() {
         return id;
     }
 
-    public void setId(long id)
-    {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getAllowedCharacters()
-    {
+    public short getActive() {
+        return active;
+    }
+
+    public void setActive(short active) {
+        this.active = active;
+    }
+
+    public String getAllowedCharacters() {
         return allowedCharacters;
     }
 
-    public void setAllowedCharacters(String allowedCharacters)
-    {
+    public void setAllowedCharacters(String allowedCharacters) {
         this.allowedCharacters = allowedCharacters;
     }
 
-    public int getMinimumLength()
-    {
+    public int getMinimumLength() {
         return minimumLength;
     }
 
-    public void setMinimumLength(int minimumLength)
-    {
+    public void setMinimumLength(int minimumLength) {
         this.minimumLength = minimumLength;
     }
 
-    public int getMaximumLength()
-    {
+    public int getMaximumLength() {
         return maximumLength;
     }
 
-    public void setMaximumLength(int maximumLength)
-    {
+    public void setMaximumLength(int maximumLength) {
         this.maximumLength = maximumLength;
     }
 
@@ -96,5 +81,21 @@ public class Job
 
     public void setExpectedResults(int expectedResults) {
         this.expectedResults = expectedResults;
+    }
+
+    public Date getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Date startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public Date getFinishedAt() {
+        return finishedAt;
+    }
+
+    public void setFinishedAt(Date finishedAt) {
+        this.finishedAt = finishedAt;
     }
 }
