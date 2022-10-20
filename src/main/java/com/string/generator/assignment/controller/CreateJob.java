@@ -1,26 +1,49 @@
 package com.string.generator.assignment.controller;
 
+import com.google.gson.Gson;
+import com.string.generator.assignment.model.job.Job;
+import com.string.generator.assignment.model.job.JobRepository;
 import com.string.generator.assignment.model.job.Validator;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.string.generator.assignment.model.request.Request;
+import com.string.generator.assignment.model.request.RequestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-@Controller
+@RestController
 public class CreateJob
 {
-    private Validator requestDataValidator;
+    private final String JOB_CREATED_MSG = "Job created successfully with ID: %o";
 
-    public CreateJob()
+    @Autowired
+    private RequestRepository requestRepository;
+
+    @Autowired
+    private JobRepository jobRepository;
+
+    private final Validator requestDataValidator;
+    private Request request;
+
+    @Autowired
+    public CreateJob(Validator validator)
     {
-        this.requestDataValidator = new Validator();
+        this.requestDataValidator = validator;
     }
 
-    @RequestMapping(value = "rest/jobmanager/create", method = POST)
-    @ResponseBody
-    public String createJob()
+    @PostMapping(value = "rest/createjob")
+    public String createJob(@RequestBody Job job)
     {
-        return "test";
+        request = new Request();
+        if (!(this.requestDataValidator.isValid(job))) {
+            request.setErrorMessages(this.requestDataValidator.getErrorMessages());
+            request.setIsValid((short)0);
+            this.requestRepository.save(request);
+
+            return new Gson().toJson(this.request.getErrorMessages());
+        }
+        request.setIsValid((short)1);
+        this.requestRepository.save(request);
+        this.jobRepository.save(job);
+
+        return String.format(this.JOB_CREATED_MSG, job.getId());
     }
 }

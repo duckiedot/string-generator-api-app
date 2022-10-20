@@ -1,7 +1,10 @@
 package com.string.generator.assignment.model.job;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 
+@Component
 public class Validator
 {
     private int charactersProvided;
@@ -25,19 +28,15 @@ public class Validator
      * Invoke every validator which upon error, append the errorMessages list.
      * Returns valid if no errors are present in array
      *
-     * @param characters characters provided by user
-     * @param maxLength maximum length of generated string
-     * @param minLength minimum length of generated string
-     * @param expectedResults expected results to generate
-     * @return
      */
-    public boolean isValid(String characters, int maxLength, int minLength, int expectedResults)
+    public boolean isValid(Job job)
     {
-        this.charactersProvided = characters.length();
+        this.errorMessages.clear();
+        this.charactersProvided = (job.getAllowedCharacters() != null) ? job.getAllowedCharacters().length() : 0;
 
-        this.validateExpectedResults(expectedResults);
-        this.validateMaxLength(maxLength);
-        this.validateMinLength(minLength, maxLength);
+        this.validateExpectedResults(job.getExpectedResults());
+        this.validateMaxLength(job.getMaximumLength());
+        this.validateMinLength(job.getMinimumLength(), job.getMaximumLength());
 
         return this.getErrorMessages().isEmpty();
     }
@@ -120,5 +119,4 @@ public class Validator
             this.errorMessages.add(this.ERROR_MSG_ZERO_LENGTH);
         }
     }
-
 }
