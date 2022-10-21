@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import com.string.generator.assignment.model.job.Job;
 import com.string.generator.assignment.model.job.JobRepository;
 import com.string.generator.assignment.model.job.Validator;
+import com.string.generator.assignment.model.processor.JobProcessor;
 import com.string.generator.assignment.model.request.Request;
 import com.string.generator.assignment.model.request.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 public class CreateJob
@@ -20,6 +23,9 @@ public class CreateJob
     @Autowired
     private JobRepository jobRepository;
 
+    @Autowired
+    private JobProcessor jobProcessor;
+
     private final Validator requestDataValidator;
     private Request request;
 
@@ -30,8 +36,7 @@ public class CreateJob
     }
 
     @PostMapping(value = "rest/createjob")
-    public String createJob(@RequestBody Job job)
-    {
+    public String createJob(@RequestBody Job job) throws IOException {
         request = new Request();
         if (!(this.requestDataValidator.isValid(job))) {
             request.setErrorMessages(this.requestDataValidator.getErrorMessages());
@@ -43,6 +48,7 @@ public class CreateJob
         request.setIsValid((short)1);
         this.requestRepository.save(request);
         this.jobRepository.save(job);
+        this.jobProcessor.processJob(job, this.jobRepository);
 
         return String.format(this.JOB_CREATED_MSG, job.getId());
     }
