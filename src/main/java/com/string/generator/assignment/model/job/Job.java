@@ -5,7 +5,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -35,6 +37,9 @@ public class Job
 
     @Column
     private Date finishedAt;
+
+    @ElementCollection
+    private List<String> generatedStrings;
 
     public void startJob()
     {
@@ -109,5 +114,16 @@ public class Job
 
     public void setFinishedAt(Date finishedAt) {
         this.finishedAt = finishedAt;
+    }
+
+    public List<String> getGeneratedStrings() {
+        return generatedStrings;
+    }
+
+    public void appendGeneratedStrings(String generatedStrings) {
+        if (this.getGeneratedStrings() == null) {
+            this.generatedStrings = new ArrayList<String>();
+        }
+        this.generatedStrings.add(generatedStrings);
     }
 }

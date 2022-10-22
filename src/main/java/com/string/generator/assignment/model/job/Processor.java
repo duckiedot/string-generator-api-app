@@ -1,22 +1,30 @@
 package com.string.generator.assignment.model.job;
 
 import com.string.generator.assignment.adapter.FileWriterAdapter;
+import com.string.generator.assignment.helper.UniqueValidator;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Processor extends Thread
 {
     private final Job job;
     private final JobRepository jobRepository;
     private final FileWriterAdapter fileWriterAdapter;
+    private final UniqueValidator uniqueValidator;
 
     private String generatedString;
 
-    public Processor(Job job, JobRepository jobRepository) throws IOException {
+    public Processor(Job job, JobRepository jobRepository) throws IOException
+    {
+        String generatedFilePath = "C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt";
+
         this.job = job;
         this.jobRepository = jobRepository;
-        this.fileWriterAdapter =
-                new FileWriterAdapter("C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt");
+
+        this.fileWriterAdapter = new FileWriterAdapter(generatedFilePath);
+        this.uniqueValidator = new UniqueValidator(this.job);
     }
 
     @Override
@@ -25,25 +33,37 @@ public class Processor extends Thread
         job.startJob();
         this.jobRepository.save(job);
 
-        for (int i = 1; i < job.getExpectedResults(); i++) {
+        /*
+           This could be used in the future,
+           if we need to add a case when program is stopped during generation, and we want to resume it
+         */
+        List<String> generatedElements = this.job.getGeneratedStrings();
+        int generatedElementsCount = generatedElements != null ? generatedElements.size() : 0;
+
+        for (int i = generatedElementsCount + 1; i < job.getExpectedResults(); i++) {
             this.generatedString = "";
             this.generatedString = this.generateUniqueString(new StringBuilder(job.getAllowedCharacters()));
 
+            //If the string is already present in file, ignore it and regenerate it
             try {
-                this.writeStringToFile(this.generatedString);
+                if (this.uniqueValidator.isUnique(this.generatedString)) {
+                    this.writeStringToFile(this.generatedString);
+                    this.job.appendGeneratedStrings(this.generatedString);
+                    this.jobRepository.save(job);
+                } else {
+                    i--;
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
         try {
             this.fileWriterAdapter.closeFile();
+            job.finishJob();
+            this.jobRepository.save(job);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        job.finishJob();
-        this.jobRepository.save(job);
     }
 
     private String generateUniqueString(StringBuilder allowedCharacters)
@@ -53,7 +73,7 @@ public class Processor extends Thread
         if (charactersLeft == 0) {
             //As per AC the generated string length can be anywhere >= minimum <= maximum
             int randomLengthInRange =
-                    (int) ((Math.random() * job.getMaximumLength() - job.getMinimumLength()) + job.getMinimumLength());
+                    ThreadLocalRandom.current().nextInt(job.getMinimumLength(), job.getMaximumLength());
 
             return this.getSubstringForGivenLength(randomLengthInRange);
         }
@@ -67,7 +87,8 @@ public class Processor extends Thread
         return this.generateUniqueString(allowedCharacters);
     }
 
-    private void writeStringToFile(String generatedString) throws IOException {
+    private void writeStringToFile(String generatedString) throws IOException
+    {
         this.fileWriterAdapter.writeStringToFile(generatedString);
     }
 
