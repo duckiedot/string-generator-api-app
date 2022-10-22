@@ -1,11 +1,12 @@
-package com.string.generator.assignment.model.job;
+package com.string.generator.assignment.validator;
 
+import com.string.generator.assignment.model.job.Job;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 @Component
-public class Validator
+public class Validator extends AbstractValidator
 {
     private int charactersProvided;
 
@@ -18,7 +19,6 @@ public class Validator
     private final String ERROR_MSG_ZERO_LENGTH = "The length cannot be zero";
     private final String ERROR_CHARACTERS_REPEAT = "Character: %s occurs more than once";
 
-    private ArrayList<String> errorMessages;
 
     public Validator()
     {
@@ -41,15 +41,6 @@ public class Validator
         this.validateCharactersNotRepeat(job.getAllowedCharacters());
 
         return this.getErrorMessages().isEmpty();
-    }
-
-    /**
-     *
-     * @return all errors preventing the job creation
-     */
-    public ArrayList<String> getErrorMessages()
-    {
-        return this.errorMessages;
     }
 
     /**
