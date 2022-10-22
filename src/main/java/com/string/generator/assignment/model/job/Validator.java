@@ -16,6 +16,7 @@ public class Validator
     private final String ERROR_MSG_MAX_LENGTH = "The expected length is bigger than qty of characters given: %o";
     private final String ERROR_MSG_MIN_LENGTH = "Minimum length cannot be smaller than maximum length";
     private final String ERROR_MSG_ZERO_LENGTH = "The length cannot be zero";
+    private final String ERROR_CHARACTERS_REPEAT = "Character: %s occurs more than once";
 
     private ArrayList<String> errorMessages;
 
@@ -37,6 +38,7 @@ public class Validator
         this.validateExpectedResults(job.getExpectedResults());
         this.validateMaxLength(job.getMaximumLength());
         this.validateMinLength(job.getMinimumLength(), job.getMaximumLength());
+        this.validateCharactersNotRepeat(job.getAllowedCharacters());
 
         return this.getErrorMessages().isEmpty();
     }
@@ -117,6 +119,26 @@ public class Validator
     {
         if (length <= 0) {
             this.errorMessages.add(this.ERROR_MSG_ZERO_LENGTH);
+        }
+    }
+
+    private void validateCharactersNotRepeat(String allowedCharacters)
+    {
+        char[] allCharsInString = allowedCharacters.toCharArray();
+
+        for (int i = 0; i <allCharsInString.length; i++) {
+            int count = 1;
+            for (int j = i + 1; j < allCharsInString.length; j++) {
+                if(allCharsInString[i] == allCharsInString[j] && allCharsInString[i] != ' ') {
+                    count++;
+                    allCharsInString[j] = '0';
+                }
+            }
+            //A character is considered as duplicate if count is greater than 1
+            if (count > 1 && allCharsInString[i] != '0') {
+                this.errorMessages.add(String.format(this.ERROR_CHARACTERS_REPEAT, allCharsInString[i]));
+                return;
+            }
         }
     }
 }
