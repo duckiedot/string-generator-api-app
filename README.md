@@ -15,7 +15,7 @@ Create a mini application in Java. Application need to generate a file with rand
     - ex. expected qty exceeds total possible permutations
  - Generate multiple results in parallel
  # API collection: 
-- Downloand this postman collection - > ...
+- Downloand this postman collection - > <a id="raw-url" href="https://raw.githubusercontent.com/duckiedot/string-generator-api-app/master/stringgenerator.postman_collection.json">Download FILE</a>
     - Create Job 
         - **{{hostname}}/rest/createjob**
         - body - JSON
