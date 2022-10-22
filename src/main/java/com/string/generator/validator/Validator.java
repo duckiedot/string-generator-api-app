@@ -1,6 +1,6 @@
-package com.string.generator.assignment.validator;
+package com.string.generator.validator;
 
-import com.string.generator.assignment.model.job.Job;
+import com.string.generator.model.job.Job;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

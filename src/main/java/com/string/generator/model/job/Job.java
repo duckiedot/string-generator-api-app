@@ -1,4 +1,4 @@
-package com.string.generator.assignment.model.job;
+package com.string.generator.model.job;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.transaction.annotation.Propagation;

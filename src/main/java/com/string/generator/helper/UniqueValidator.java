@@ -1,6 +1,6 @@
-package com.string.generator.assignment.helper;
+package com.string.generator.helper;
 
-import com.string.generator.assignment.model.job.Job;
+import com.string.generator.model.job.Job;
 
 import java.util.*;
 

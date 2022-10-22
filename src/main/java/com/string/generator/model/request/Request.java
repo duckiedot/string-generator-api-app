@@ -1,4 +1,4 @@
-package com.string.generator.assignment.model.request;
+package com.string.generator.model.request;
 
 import org.hibernate.annotations.CreationTimestamp;
 

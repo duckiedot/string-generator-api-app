@@ -1,4 +1,4 @@
-package com.string.generator.assignment.adapter;
+package com.string.generator.adapter;
 
 import java.io.File;
 import java.io.FileWriter;

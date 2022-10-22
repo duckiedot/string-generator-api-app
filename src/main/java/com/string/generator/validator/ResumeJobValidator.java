@@ -1,7 +1,7 @@
-package com.string.generator.assignment.validator;
+package com.string.generator.validator;
 
-import com.string.generator.assignment.model.job.Job;
-import com.string.generator.assignment.model.job.JobRepository;
+import com.string.generator.model.job.Job;
+import com.string.generator.model.job.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
-package com.string.generator.assignment;
+package com.string.generator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StringGeneratorApiAppApplicationTests {
+class StringGeneratorAppTests {
 
 	@Test
 	void contextLoads() {

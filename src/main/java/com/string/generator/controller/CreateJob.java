@@ -1,18 +1,17 @@
-package com.string.generator.assignment.controller;
+package com.string.generator.controller;
 
 import com.google.gson.Gson;
-import com.string.generator.assignment.model.job.Job;
-import com.string.generator.assignment.model.job.JobRepository;
-import com.string.generator.assignment.validator.ResumeJobValidator;
-import com.string.generator.assignment.validator.Validator;
-import com.string.generator.assignment.model.processor.JobProcessor;
-import com.string.generator.assignment.model.request.Request;
-import com.string.generator.assignment.model.request.RequestRepository;
+import com.string.generator.model.job.Job;
+import com.string.generator.model.job.JobRepository;
+import com.string.generator.validator.ResumeJobValidator;
+import com.string.generator.validator.Validator;
+import com.string.generator.model.processor.JobProcessor;
+import com.string.generator.model.request.Request;
+import com.string.generator.model.request.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 public class CreateJob

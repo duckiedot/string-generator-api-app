@@ -1,13 +1,13 @@
-package com.string.generator.assignment;
+package com.string.generator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StringGeneratorApiAppApplication
+public class StringGeneratorApp
 {
 	public static void main(String[] args) {
-		SpringApplication.run(StringGeneratorApiAppApplication.class, args);
+		SpringApplication.run(StringGeneratorApp.class, args);
 	}
 
 }

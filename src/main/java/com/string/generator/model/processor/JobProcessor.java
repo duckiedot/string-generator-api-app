@@ -1,8 +1,8 @@
-package com.string.generator.assignment.model.processor;
+package com.string.generator.model.processor;
 
-import com.string.generator.assignment.model.job.Job;
-import com.string.generator.assignment.model.job.JobRepository;
-import com.string.generator.assignment.model.job.Processor;
+import com.string.generator.model.job.Job;
+import com.string.generator.model.job.JobRepository;
+import com.string.generator.model.job.Processor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

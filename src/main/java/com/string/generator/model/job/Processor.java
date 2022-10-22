@@ -1,7 +1,7 @@
-package com.string.generator.assignment.model.job;
+package com.string.generator.model.job;
 
-import com.string.generator.assignment.adapter.FileWriterAdapter;
-import com.string.generator.assignment.helper.UniqueValidator;
+import com.string.generator.adapter.FileWriterAdapter;
+import com.string.generator.helper.UniqueValidator;
 import org.hibernate.Hibernate;
 
 import java.io.IOException;

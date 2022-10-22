@@ -1,4 +1,4 @@
-package com.string.generator.assignment.validator;
+package com.string.generator.validator;
 
 import java.util.ArrayList;
 

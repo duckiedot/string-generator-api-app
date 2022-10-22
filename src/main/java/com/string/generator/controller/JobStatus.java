@@ -1,8 +1,8 @@
-package com.string.generator.assignment.controller;
+package com.string.generator.controller;
 
 import com.google.gson.Gson;
-import com.string.generator.assignment.model.job.Job;
-import com.string.generator.assignment.model.job.JobRepository;
+import com.string.generator.model.job.Job;
+import com.string.generator.model.job.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
