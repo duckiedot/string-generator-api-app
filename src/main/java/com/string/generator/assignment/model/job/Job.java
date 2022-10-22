@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 
@@ -34,6 +35,17 @@ public class Job
 
     @Column
     private Date finishedAt;
+
+    public void startJob()
+    {
+        this.setStartedAt(Date.from(Instant.now()));
+    }
+
+    public void finishJob()
+    {
+        this.setFinishedAt(Date.from(Instant.now()));
+        this.setActive((short)0);
+    }
 
     public long getId() {
         return id;

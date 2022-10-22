@@ -1,37 +1,28 @@
 package com.string.generator.assignment.model.job;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.string.generator.assignment.adapter.FileWriterAdapter;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
 
 public class Processor extends Thread
 {
-    private Job job;
-
-    private JobRepository jobRepository;
-
-    private File generatedFile;
-    private FileWriter fileWriter;
+    private final Job job;
+    private final JobRepository jobRepository;
+    private final FileWriterAdapter fileWriterAdapter;
 
     private String generatedString;
 
     public Processor(Job job, JobRepository jobRepository) throws IOException {
         this.job = job;
         this.jobRepository = jobRepository;
-        this.generatedFile = new File(
-                "C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt"
-        );
-        this.fileWriter = new FileWriter(this.generatedFile, true);
+        this.fileWriterAdapter =
+                new FileWriterAdapter("C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt");
     }
 
     @Override
     public void run()
     {
-        job.setStartedAt(Date.from(Instant.now()));
+        job.startJob();
         this.jobRepository.save(job);
 
         for (int i = 1; i < job.getExpectedResults(); i++) {
@@ -46,13 +37,12 @@ public class Processor extends Thread
         }
 
         try {
-            fileWriter.close();
+            this.fileWriterAdapter.closeFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        job.setFinishedAt(Date.from(Instant.now()));
-        job.setActive((short)0);
+        job.finishJob();
         this.jobRepository.save(job);
     }
 
@@ -61,7 +51,11 @@ public class Processor extends Thread
         int charactersLeft = allowedCharacters.length();
 
         if (charactersLeft == 0) {
-            return this.generatedString;
+            //As per AC the generated string length can be anywhere >= minimum <= maximum
+            int randomLengthInRange =
+                    (int) ((Math.random() * job.getMaximumLength() - job.getMinimumLength()) + job.getMinimumLength());
+
+            return this.getSubstringForGivenLength(randomLengthInRange);
         }
 
         int randomCharIndex = (int) ((Math.random() * (charactersLeft - 1)) + 1);
@@ -74,7 +68,11 @@ public class Processor extends Thread
     }
 
     private void writeStringToFile(String generatedString) throws IOException {
-        this.fileWriter.write(generatedString);
-        this.fileWriter.write('\n');
+        this.fileWriterAdapter.writeStringToFile(generatedString);
+    }
+
+    private String getSubstringForGivenLength(int length)
+    {
+        return this.generatedString.substring(0, length);
     }
 }
