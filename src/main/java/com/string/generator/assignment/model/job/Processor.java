@@ -2,6 +2,7 @@ package com.string.generator.assignment.model.job;
 
 import com.string.generator.assignment.adapter.FileWriterAdapter;
 import com.string.generator.assignment.helper.UniqueValidator;
+import org.hibernate.Hibernate;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Processor extends Thread
     public Processor(Job job, JobRepository jobRepository) throws IOException
     {
         String generatedFilePath = "C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt";
+        Hibernate.initialize(job.getGeneratedStrings());
 
         this.job = job;
         this.jobRepository = jobRepository;

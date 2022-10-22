@@ -1,6 +1,8 @@
 package com.string.generator.assignment.model.job;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Entity;
 import javax.persistence.*;

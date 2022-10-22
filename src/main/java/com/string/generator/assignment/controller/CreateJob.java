@@ -56,7 +56,7 @@ public class CreateJob
         return String.format(this.JOB_CREATED_MSG, job.getId());
     }
 
-    @PostMapping(value = "rest/resumejob/")
+    @PostMapping(value = "rest/resumejob")
     public String resumeJob(@RequestBody long jobId) throws IOException {
         Request request = new Request();
 
