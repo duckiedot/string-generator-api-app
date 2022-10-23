@@ -18,23 +18,29 @@ public class CreateJob
 {
     private final String JOB_CREATED_MSG = "Job created successfully with ID: %o";
 
-    @Autowired
-    private RequestRepository requestRepository;
-
-    @Autowired
-    private JobRepository jobRepository;
-
-    @Autowired
-    private JobProcessor jobProcessor;
-
+    private final RequestRepository requestRepository;
+    private final JobRepository jobRepository;
+    private final JobProcessor jobProcessor;
     private final Validator requestDataValidator;
     private final ResumeJobValidator resumeJobValidator;
 
+    private Gson gson;
+
     @Autowired
-    public CreateJob(Validator validator, ResumeJobValidator resumeJobValidator)
-    {
+    public CreateJob(
+            RequestRepository requestRepository,
+            JobRepository jobRepository,
+            Validator validator,
+            ResumeJobValidator resumeJobValidator,
+            JobProcessor jobProcessor,
+            Gson gson
+    ) {
+        this.requestRepository = requestRepository;
+        this.jobRepository = jobRepository;
         this.requestDataValidator = validator;
         this.resumeJobValidator = resumeJobValidator;
+        this.jobProcessor = jobProcessor;
+        this.gson = gson;
     }
 
     @PostMapping(value = "rest/createjob")
@@ -42,12 +48,12 @@ public class CreateJob
         Request request = new Request();
         if (!(this.requestDataValidator.isValid(job))) {
             request.setErrorMessages(this.requestDataValidator.getErrorMessages());
-            request.setIsValid((short)0);
+            request.setIsValid(true);
             this.requestRepository.save(request);
 
-            return new Gson().toJson(request.getErrorMessages());
+            return this.gson.toJson(request.getErrorMessages());
         }
-        request.setIsValid((short)1);
+        request.setIsValid(false);
         this.requestRepository.save(request);
         this.jobRepository.save(job);
         this.jobProcessor.processJob(job, this.jobRepository);
@@ -61,12 +67,12 @@ public class CreateJob
 
         if (!this.resumeJobValidator.isValid(jobId)) {
             request.setErrorMessages(this.resumeJobValidator.getErrorMessages());
-            request.setIsValid((short)0);
+            request.setIsValid(false);
             this.requestRepository.save(request);
 
-            return new Gson().toJson(request.getErrorMessages());
+            return this.gson.toJson(request.getErrorMessages());
         }
-        request.setIsValid((short)1);
+        request.setIsValid(true);
         this.requestRepository.save(request);
         this.jobProcessor.processJob(this.jobRepository.findById(jobId).get(), this.jobRepository);
 

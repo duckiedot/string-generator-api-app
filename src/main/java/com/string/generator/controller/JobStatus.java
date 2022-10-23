@@ -17,17 +17,21 @@ public class JobStatus
     private final short JOB_RUNNING_CODE = 1;
     private final String MSG_JOBS_RUNNING = "Currently there are %o jobs running";
 
-    @Autowired
-    private JobRepository jobsRepository;
+    private final JobRepository jobsRepository;
+    private final Gson gson;
 
     @Autowired
-    private Gson gson;
+    public JobStatus(JobRepository jobsRepository, Gson gson)
+    {
+        this.jobsRepository = jobsRepository;
+        this.gson = gson;
+    }
 
     @GetMapping(value = "rest/jobs/get-all-active")
     @ResponseBody
     public String getJobsRunning()
     {
-        return this.gson.toJson(this.jobsRepository.findByActive(this.JOB_RUNNING_CODE));
+        return this.gson.toJson(this.jobsRepository.findByActive(true));
     }
 
     @GetMapping(value = "rest/jobs/get-active-count")

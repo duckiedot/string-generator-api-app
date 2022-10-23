@@ -19,17 +19,17 @@ public class Request
     private Date createdAt;
 
     @Column
-    private short isValid;
+    private boolean isValid;
 
     @ElementCollection
     private List<String> errorMessages;
 
-    public short getIsValid()
+    public boolean getIsValid()
     {
         return isValid;
     }
 
-    public void setIsValid(short isValid)
+    public void setIsValid(boolean isValid)
     {
         this.isValid = isValid;
     }

@@ -24,14 +24,20 @@ import java.nio.file.Paths;
 @RestController
 public class Download
 {
-    @Autowired
-    private ConfigurationService configurationService;
+    private final ConfigurationService configurationService;
+    private final RequestRepository requestRepository;
+    private final DownloadValidator downloadValidator;
 
     @Autowired
-    private RequestRepository requestRepository;
-
-    @Autowired
-    private DownloadValidator downloadValidator;
+    public Download(
+            ConfigurationService configurationService,
+            RequestRepository requestRepository,
+            DownloadValidator downloadValidator
+    ) {
+        this.configurationService = configurationService;
+        this.requestRepository = requestRepository;
+        this.downloadValidator = downloadValidator;
+    }
 
     @RequestMapping(path = "rest/download-by-id", method = RequestMethod.GET)
     public ResponseEntity<Object> download(@RequestParam("id") long id) throws IOException
@@ -39,6 +45,10 @@ public class Download
         Request request = new Request();
 
         if (!this.downloadValidator.isValid(id)) {
+            request.setIsValid(false);
+            request.setErrorMessages(this.downloadValidator.getErrorMessages());
+            this.requestRepository.save(request);
+
             return ResponseEntity.badRequest().body(this.downloadValidator.getErrorMessages());
         }
 

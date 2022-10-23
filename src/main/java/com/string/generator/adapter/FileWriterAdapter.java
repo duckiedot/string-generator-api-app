@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class FileWriterAdapter
 {
-    private FileWriter fileWriter;
+    private final FileWriter fileWriter;
 
     public FileWriterAdapter(String path) throws IOException
     {

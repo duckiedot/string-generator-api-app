@@ -4,8 +4,6 @@ import com.string.generator.adapter.FileWriterAdapter;
 import com.string.generator.helper.UniqueValidator;
 import com.string.generator.service.ConfigurationService;
 import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.List;

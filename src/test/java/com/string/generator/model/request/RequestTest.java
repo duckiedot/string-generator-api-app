@@ -22,8 +22,8 @@ class RequestTest {
 
     @Test
     void getIsValid() {
-        short valid = 1;
-        short notValid = 0;
+        boolean valid = true;
+        boolean notValid = false;
 
         this.request.setIsValid(valid);
 
