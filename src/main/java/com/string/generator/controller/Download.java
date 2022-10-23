@@ -1,9 +1,12 @@
 package com.string.generator.controller;
 
+import com.google.gson.Gson;
+import com.string.generator.model.request.Request;
+import com.string.generator.model.request.RequestRepository;
 import com.string.generator.service.ConfigurationService;
+import com.string.generator.validator.DownloadValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +27,21 @@ public class Download
     @Autowired
     private ConfigurationService configurationService;
 
+    @Autowired
+    private RequestRepository requestRepository;
+
+    @Autowired
+    private DownloadValidator downloadValidator;
+
     @RequestMapping(path = "rest/download-by-id", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(@RequestParam("id") long id) throws IOException {
+    public ResponseEntity<Object> download(@RequestParam("id") long id) throws IOException
+    {
+        Request request = new Request();
+
+        if (!this.downloadValidator.isValid(id)) {
+            return ResponseEntity.badRequest().body(this.downloadValidator.getErrorMessages());
+        }
+
         File file = new File(this.configurationService.properties().getProperty("path") + id + ".txt");
 
         HttpHeaders header = new HttpHeaders();

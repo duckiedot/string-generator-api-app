@@ -3,8 +3,6 @@ package com.string.generator.validator;
 import com.string.generator.model.job.Job;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-
 @Component
 public class Validator extends AbstractValidator
 {
@@ -18,12 +16,6 @@ public class Validator extends AbstractValidator
     private final String ERROR_MSG_MIN_LENGTH = "Minimum length cannot be smaller than maximum length";
     private final String ERROR_MSG_ZERO_LENGTH = "The length cannot be zero";
     private final String ERROR_CHARACTERS_REPEAT = "Character: %s occurs more than once";
-
-
-    public Validator()
-    {
-        this.errorMessages = new ArrayList<String>();
-    }
 
     /**
      * Invoke every validator which upon error, append the errorMessages list.
