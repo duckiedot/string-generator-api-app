@@ -18,6 +18,7 @@ Create a mini application in Java. Application need to generate a file with rand
  
  # Run the app
 - change **src/main/resources/configuration.properties:1** to wherever you want to save the generated files
+- change **src/main/resources/application.properties** db credentials 
 - **./gradlew build**
 - **./gradlew bootrun** - run the app 
 - **./gradlew test** - run test only
