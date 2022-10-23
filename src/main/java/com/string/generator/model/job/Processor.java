@@ -46,7 +46,7 @@ public class Processor extends Thread
         List<String> generatedElements = this.job.getGeneratedStrings();
         int generatedElementsCount = generatedElements != null ? generatedElements.size() : 0;
 
-        for (int i = generatedElementsCount + 1; i < job.getExpectedResults(); i++) {
+        for (int i = generatedElementsCount; i < job.getExpectedResults(); i++) {
             this.generatedString = "";
             this.generatedString = this.generateUniqueString(new StringBuilder(job.getAllowedCharacters()));
 
