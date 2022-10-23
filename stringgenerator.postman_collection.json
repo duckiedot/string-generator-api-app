@@ -95,6 +95,30 @@
 			"response": []
 		},
 		{
+			"name": "Get result by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/rest/download-by-id?id=1",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"download-by-id"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get running jobs",
 			"request": {
 				"method": "GET",
