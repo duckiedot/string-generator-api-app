@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"allowedCharacters\": \"abcdf\",\r\n    \"minimumLength\" : 4,\r\n    \"maximumLength\" : 5,\r\n    \"expectedResults\" : 50\r\n}",
+					"raw": "{\r\n    \"allowedCharacters\": \"dhgack\",\r\n    \"minimumLength\" : 3,\r\n    \"maximumLength\" : 5,\r\n    \"expectedResults\" : 50\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -55,6 +55,40 @@
 					"path": [
 						"rest",
 						"createjob"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resume Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/resumejob",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"resumejob"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": "1",
+							"disabled": true
+						}
 					]
 				}
 			},
