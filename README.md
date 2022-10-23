@@ -9,11 +9,19 @@ Create a mini application in Java. Application need to generate a file with rand
 - Connection to local DB
 - REST endpoints:
     - Create Job (POST)
+    - Resume Job (POST)
     - check running Jobs (GET)
     - Fetch result (GET)
  - Return detailed error messages
     - ex. expected qty exceeds total possible permutations
  - Generate multiple results in parallel
+ 
+ # Run the app
+- change **src/main/resources/configuration.properties:1** to wherever you want to save the generated files
+- **./gradlew build**
+- **./gradlew bootrun** - run the app 
+- **./gradlew test** - run test only
+ 
  # API collection: 
 - Downloand this postman collection - > <a id="raw-url" href="https://raw.githubusercontent.com/duckiedot/string-generator-api-app/master/stringgenerator.postman_collection.json">Download FILE</a>
     - Create Job 
@@ -23,6 +31,10 @@ Create a mini application in Java. Application need to generate a file with rand
         - minimumLength - int, minimum length of the generated string
         - maximumLength - int, maximum length of the generated string
         - expectedResults - int, expected unique strings to generate
+    - Resume Job
+        - **{{hostname}}/rest/resumejob
+        - body - JSON
+        - int - id of the job we want to resume
     - Get running jobs
         - **{{hostname}}/rest/jobs/get-all-active**
         - Returns all jobs with status active
