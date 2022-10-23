@@ -2,10 +2,11 @@ package com.string.generator.validator;
 
 import com.string.generator.model.job.Job;
 import com.string.generator.model.job.JobRepository;
+import com.string.generator.service.ConfigurationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Optional;
 
@@ -25,12 +26,17 @@ class DownloadValidatorTest
     private JobRepository jobRepositoryMock;
     private Job jobMock;
 
+    private ConfigurableEnvironment configMock;
+
     @BeforeEach
     public void setUp()
     {
         this.jobMock = mock(Job.class);
         this.jobRepositoryMock = mock(JobRepository.class);
-        this.downloadValidator = new DownloadValidator(this.jobRepositoryMock);
+        ConfigurationService service = mock(ConfigurationService.class);
+        this.configMock = mock(ConfigurableEnvironment.class);
+        when(service.properties()).thenReturn(this.configMock);
+        this.downloadValidator = new DownloadValidator(this.jobRepositoryMock, service);
     }
 
     @Test
@@ -45,6 +51,8 @@ class DownloadValidatorTest
     @Test
     public void isValidFalse()
     {
+        when(this.configMock.getProperty("download.job.not.finished"))
+                .thenReturn("Job with given ID is not finished");
         when(this.jobRepositoryMock.findById(this.JOB_ID)).thenReturn(Optional.of(this.jobMock));
         when(this.jobMock.getActive()).thenReturn(this.JOB_STATUS_ACTIVE);
 

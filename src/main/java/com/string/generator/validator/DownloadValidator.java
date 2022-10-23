@@ -2,7 +2,9 @@ package com.string.generator.validator;
 
 import com.string.generator.model.job.Job;
 import com.string.generator.model.job.JobRepository;
+import com.string.generator.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -10,15 +12,15 @@ import java.util.Optional;
 @Component
 public class DownloadValidator extends AbstractValidator implements ExistingJobValidatorInterface
 {
-    private final String ERROR_MSG_INVALID_ID = "Job with given ID doesn't exist";
-    private final String ERROR_MSG_JOB_NOT_FINISHED = "Job with given ID is not finished";
-
     private final JobRepository jobRepository;
 
+    private final ConfigurableEnvironment config;
+
     @Autowired
-    public DownloadValidator(JobRepository jobRepository)
+    public DownloadValidator(JobRepository jobRepository, ConfigurationService configurationService)
     {
         this.jobRepository = jobRepository;
+        this.config = configurationService.properties();
     }
 
     public boolean isValid(long jobId)
@@ -27,12 +29,12 @@ public class DownloadValidator extends AbstractValidator implements ExistingJobV
         Optional<Job> currentJob = this.jobRepository.findById(jobId);
 
         if (currentJob.isEmpty()) {
-            this.errorMessages.add(this.ERROR_MSG_INVALID_ID);
+            this.errorMessages.add(this.config.getProperty("download.job.invalid.id"));
             return false;
         }
 
         if (currentJob.get().getActive() == 1) {
-            this.errorMessages.add(this.ERROR_MSG_JOB_NOT_FINISHED);
+            this.errorMessages.add(this.config.getProperty("download.job.not.finished"));
             return false;
         }
 

@@ -1,21 +1,25 @@
 package com.string.generator.validator;
 
 import com.string.generator.model.job.Job;
+import com.string.generator.service.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 public class Validator extends AbstractValidator
 {
     private int charactersProvided;
 
-    private final String ERROR_MSG_EXCEEDS_TOTAL_UNIQUE =
-            "The expected return count exceeds the total possible unique strings: %o";
-    private final String ERROR_MSG_ZERO_QTY = "If you don't want results, why even call this request? :)";
+    private final ConfigurableEnvironment config;
 
-    private final String ERROR_MSG_MAX_LENGTH = "The expected length is bigger than qty of characters given: %o";
-    private final String ERROR_MSG_MIN_LENGTH = "Minimum length cannot be smaller than maximum length";
-    private final String ERROR_MSG_ZERO_LENGTH = "The length cannot be zero";
-    private final String ERROR_CHARACTERS_REPEAT = "Character: %s occurs more than once";
+    @Autowired
+    public Validator(ConfigurationService configurationService)
+    {
+        this.config = configurationService.properties();
+    }
 
     /**
      * Invoke every validator which upon error, append the errorMessages list.
@@ -60,10 +64,13 @@ public class Validator extends AbstractValidator
         int possibleStringVariations = this.countPossibleVariations(this.charactersProvided);
 
         if (!(expectedResults <= possibleStringVariations)) {
-            this.errorMessages.add(String.format(this.ERROR_MSG_EXCEEDS_TOTAL_UNIQUE,  possibleStringVariations));
+            this.errorMessages.add(String.format(
+                    this.config.getRequiredProperty("create.job.exceeds.total.unique"),
+                    possibleStringVariations
+            ));
         }
         if (expectedResults <= 0) {
-            this.errorMessages.add(this.ERROR_MSG_ZERO_QTY);
+            this.errorMessages.add(this.config.getProperty("create.job.zero.qty"));
         }
     }
 
@@ -74,7 +81,10 @@ public class Validator extends AbstractValidator
     private void validateMaxLength(int maxLength)
     {
         if (maxLength > this.charactersProvided) {
-            this.errorMessages.add(String.format(this.ERROR_MSG_MAX_LENGTH, this.charactersProvided));
+            this.errorMessages.add(String.format(
+                    this.config.getRequiredProperty("create.job.maximum.too.high"),
+                    this.charactersProvided
+            ));
         }
         this.validateZeroLength(maxLength);
     }
@@ -88,7 +98,7 @@ public class Validator extends AbstractValidator
     private void validateMinLength(int minLength, int maxLength)
     {
         if (minLength > maxLength) {
-            this.errorMessages.add(this.ERROR_MSG_MIN_LENGTH);
+            this.errorMessages.add(this.config.getProperty("create.job.minimum.too.high"));
         }
         this.validateZeroLength(minLength);
     }
@@ -101,7 +111,7 @@ public class Validator extends AbstractValidator
     private void validateZeroLength(int length)
     {
         if (length <= 0) {
-            this.errorMessages.add(this.ERROR_MSG_ZERO_LENGTH);
+            this.errorMessages.add(this.config.getProperty("create.job.length.zero"));
         }
     }
 
@@ -119,7 +129,10 @@ public class Validator extends AbstractValidator
             }
             //A character is considered as duplicate if count is greater than 1
             if (count > 1 && allCharsInString[i] != '0') {
-                this.errorMessages.add(String.format(this.ERROR_CHARACTERS_REPEAT, allCharsInString[i]));
+                this.errorMessages.add(String.format(
+                        this.config.getRequiredProperty("create.job.character.repeat"),
+                        allCharsInString[i]
+                ));
                 return;
             }
         }
