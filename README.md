@@ -44,3 +44,7 @@ Create a mini application in Java. Application need to generate a file with rand
     - Get all jobs
         - **{{hostname}}/rest/jobs/get-all-jobs**
         - returns every job, regardless of its status
+    - Download result
+        - **{{hostname}}/rest/download-by-id***
+        - parameter ?id={id}
+        - returns .txt file with all generated strings 
