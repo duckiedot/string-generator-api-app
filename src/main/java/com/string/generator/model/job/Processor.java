@@ -2,7 +2,10 @@ package com.string.generator.model.job;
 
 import com.string.generator.adapter.FileWriterAdapter;
 import com.string.generator.helper.UniqueValidator;
+import com.string.generator.service.ConfigurationService;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,12 +17,13 @@ public class Processor extends Thread
     private final JobRepository jobRepository;
     private final FileWriterAdapter fileWriterAdapter;
     private final UniqueValidator uniqueValidator;
-
     private String generatedString;
+
 
     public Processor(Job job, JobRepository jobRepository) throws IOException
     {
-        String generatedFilePath = "C:\\Users\\duckiedot\\Desktop\\generated-string-" + job.getId() + ".txt";
+        ConfigurationService configurationService = new ConfigurationService();
+        String generatedFilePath = configurationService.properties().getProperty("path") + job.getId() + ".txt";
         Hibernate.initialize(job.getGeneratedStrings());
 
         this.job = job;
