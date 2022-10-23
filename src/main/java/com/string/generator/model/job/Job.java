@@ -15,8 +15,8 @@ public class Job
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
-    private short active;
+    @Column(columnDefinition = "boolean default false")
+    private boolean active;
 
     @Column(nullable = false)
     private String allowedCharacters;
@@ -47,7 +47,7 @@ public class Job
     public void finishJob()
     {
         this.setFinishedAt(Date.from(Instant.now()));
-        this.setActive((short)0);
+        this.setActive(false);
     }
 
     public long getId() {
@@ -58,11 +58,11 @@ public class Job
         this.id = id;
     }
 
-    public short getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(short active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

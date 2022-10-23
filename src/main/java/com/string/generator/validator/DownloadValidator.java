@@ -33,7 +33,7 @@ public class DownloadValidator extends AbstractValidator implements ExistingJobV
             return false;
         }
 
-        if (currentJob.get().getActive() == 1) {
+        if (currentJob.get().getActive()) {
             this.errorMessages.add(this.config.getProperty("download.job.not.finished"));
             return false;
         }

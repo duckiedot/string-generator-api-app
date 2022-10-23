@@ -39,7 +39,7 @@ class ResumeJobValidatorTest
     public void isValidTrue()
     {
         when(this.jobRepositoryMock.findById(this.JOB_ID)).thenReturn(Optional.of(this.jobMock));
-        when(this.jobMock.getActive()).thenReturn((short)1);
+        when(this.jobMock.getActive()).thenReturn(true);
 
         assertTrue(this.resumeJobValidator.isValid(this.JOB_ID));
     }
@@ -48,7 +48,7 @@ class ResumeJobValidatorTest
     public void isValidFalse()
     {
         when(this.jobRepositoryMock.findById(this.JOB_ID)).thenReturn(Optional.of(this.jobMock));
-        when(this.jobMock.getActive()).thenReturn((short)0);
+        when(this.jobMock.getActive()).thenReturn(false);
         when(this.configMock.getProperty("resume.job.invalid.id"))
                 .thenReturn("Job with requested ID either doesn't exist, or is already finished");
 

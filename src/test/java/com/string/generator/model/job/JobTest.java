@@ -35,8 +35,8 @@ class JobTest {
     @Test
     void getActive() {
 
-        short active = 1;
-        short notActive = 0;
+        boolean active = true;
+        boolean notActive = false;
 
         this.job.setActive(active);
 

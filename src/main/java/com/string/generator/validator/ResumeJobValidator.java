@@ -36,6 +36,6 @@ public class ResumeJobValidator extends AbstractValidator implements ExistingJob
     private boolean validateJob(long jobId)
     {
         Optional<Job> currentJob = this.jobRepository.findById(jobId);
-        return currentJob.isPresent() && currentJob.get().getActive() == 1;
+        return currentJob.isPresent() && currentJob.get().getActive();
     }
 }

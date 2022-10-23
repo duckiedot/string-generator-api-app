@@ -19,8 +19,8 @@ class DownloadValidatorTest
 {
     private final long JOB_ID = 5555;
 
-    private final short JOB_STATUS_ACTIVE = 1;
-    private final short JOB_STATUS_NOT_ACTIVE = 0;
+    private final boolean JOB_STATUS_ACTIVE = true;
+    private final boolean JOB_STATUS_NOT_ACTIVE = false;
 
     private DownloadValidator downloadValidator;
     private JobRepository jobRepositoryMock;
